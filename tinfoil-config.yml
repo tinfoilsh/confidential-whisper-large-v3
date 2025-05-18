@@ -1,17 +1,17 @@
-cvm-version: 0.0.30
+cvm-version: 0.0.31
 ovmf-version: 0.0.2
-cpus: 4
-memory: 16384
+cpus: 16
+memory: 65536
 
 models:
-  - name: "whisper-large-v3"
-    repo: "openai/whisper-large-v3@06f233fe06e710322aca913c1bc4249a0d71fce1"
-    mpk: ""
-vllm-args: --max-model-len 448 --max-num-seqs 400 --task transcription --limit-mm-per-prompt audio=1
+  - name: "whisper-large-v3-turbo"
+    repo: "openai/whisper-large-v3-turbo@41f01f3fe87f28c78e2fbf8b568835947dd65ed9"
+    mpk: "dd81839982fa01a289f7b60613055e4e1f789503c25a3535b75d53841f7f5b78_1622474752_55d2c545-4d89-5658-9ffd-ce0b4d07ac36"
+vllm-args: --task transcription --max-model-len 448 --max-num-seqs 400 --limit-mm-per-prompt audio=1
 
 shim:
   domains:
-    - whisper-large-v3.model.tinfoil.sh
+    - whisper-large-v3-turbo.model.tinfoil.sh
   listen-port: 443
   upstream-port: 8080
   control-plane: https://api.tinfoil.sh
