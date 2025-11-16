@@ -1,23 +1,35 @@
-cvm-version: 0.0.32
-ovmf-version: 0.0.2
-cpus: 16
+shim-version: v0.2.10@sha256:f9040a48106ab06c290fd9b225d4dd53a2daad715c9107594d4310b21592039f
+cvm-version: 0.5.7
+cpus: 8
 memory: 65536
+gpus: full
+vllm: false
 
 models:
   - name: "whisper-large-v3-turbo"
     repo: "openai/whisper-large-v3-turbo@41f01f3fe87f28c78e2fbf8b568835947dd65ed9"
     mpk: "dd81839982fa01a289f7b60613055e4e1f789503c25a3535b75d53841f7f5b78_1622474752_55d2c545-4d89-5658-9ffd-ce0b4d07ac36"
-vllm-args: --task transcription --max-model-len 448 --max-num-seqs 400 --limit-mm-per-prompt audio=1
+
+containers:
+  - name: "whisper-large-v3-turbo"
+    image: ""
+    args: [
+      "--runtime", "nvidia",
+      "--gpus", "all",
+      "--ipc", "host",
+      "vllm/vllm-openai:v0.11.0@sha256:014a95f21c9edf6abe0aea6b07353f96baa4ec291c427bb1176dc7c93a85845c",
+      "--model", "/tinfoil/mpk/mpk-dd81839982fa01a289f7b60613055e4e1f789503c25a3535b75d53841f7f5b78",
+      "--served-model-name", "whisper-large-v3-turbo",
+      "--task", "transcription",
+      "--port", "8001"
+    ]
 
 shim:
-  domains:
-    - whisper-large-v3-turbo.model.tinfoil.sh
   listen-port: 443
-  upstream-port: 8080
+  upstream-port: 8001
+  publish-attestation: false
+  tls-challenge: dns
   control-plane: https://api.tinfoil.sh
   paths:
     - /v1/audio/transcriptions
     - /metrics
-  origins:
-    - https://tinfoil.sh
-    - https://chat.tinfoil.sh
