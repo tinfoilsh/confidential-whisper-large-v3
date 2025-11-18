@@ -17,7 +17,7 @@ containers:
       "--runtime", "nvidia",
       "--gpus", "all",
       "--ipc", "host",
-      "vllm/vllm-openai:v0.11.0@sha256:014a95f21c9edf6abe0aea6b07353f96baa4ec291c427bb1176dc7c93a85845c",
+      "ghcr.io/tinfoilsh/vllm-openai-audio:v0.0.1@sha256-47b9cc0a5750618cda9b49ca0664d05d10d3e3322f37495d4de03d8740817459",
       "--model", "/tinfoil/mpk/mpk-dd81839982fa01a289f7b60613055e4e1f789503c25a3535b75d53841f7f5b78",
       "--served-model-name", "whisper-large-v3-turbo",
       "--task", "transcription",
